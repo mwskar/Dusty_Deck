@@ -46,13 +46,6 @@ int main ()
         BV[i] = jn(1, (double)(conrand(seed) * (double)pow(-1.0, int(10*conrand(seed)) % N ) ) );
     }
 
-        printf("Before new stuff\n");
-        check = 0.0;
-        ival = N;
-        check = check + AV[0] * BV[0];
-        printf("Before idcheck\n");
-        idcheck(ival, check, AV, BV, ID);
-/*
     check = 0.0;
     for (int i = 0; i < N; i++)
     {
@@ -61,11 +54,11 @@ int main ()
         idcheck(ival, check, AV, BV, ID);
     }
 
-/*
+
     // |AV >< BV|
-    for (int i = 1; i <= N; i++)
+    for (int i = 0; i < N; i++)
     {
-        for (int j = 1; j <= N; j++)
+        for (int j = 0; j < N; j++)
         {
             idcheck(N,check,AV,BV,ID);
             if (check > 0.5)
@@ -80,6 +73,7 @@ int main ()
         IA[i] = i;
     }
 
+/*
     for (int i = 1; i <= N; i++)
     {
         for(int j = 0; j <= i; j = j + 8)
@@ -273,8 +267,8 @@ void idcheck(int N, double &check, double AV[MAXDIM], double BV[MAXDIM], double 
             }
         }
     }
-    printf("ID[0][1]: %15.18f\n", ID[0][1]);
-    printf("After big loops\n");
+    //printf("ID[0][1]: %15.18f\n", ID[0][1]);
+    //printf("After big loops\n");
 
     l2 = 0.0;
     for (int i = 0; i < N; i++)
@@ -283,12 +277,12 @@ void idcheck(int N, double &check, double AV[MAXDIM], double BV[MAXDIM], double 
     }
     
     l2 = sqrt(l2);
-    printf("l2: %15.18f\n", l2);
+    //printf("l2: %15.18f\n", l2);
     for (int i = 0; i < N; i++)
     {
         AV[i] = AV[i] / l2;
     }
-    printf("AV[0]: %15.18f\n", AV[0]);
+    //printf("AV[0]: %15.18f\n", AV[0]);
     
     l2 = 0.0;
     for (int i = 0; i < N; i++)
@@ -297,25 +291,25 @@ void idcheck(int N, double &check, double AV[MAXDIM], double BV[MAXDIM], double 
     }
     
     l2 = sqrt(l2);
-    printf("l2: %15.18f\n", l2);
+    //printf("l2: %15.18f\n", l2);
     for (int i = 0; i < N; i++)
     {
         BV[i] = BV[i] / l2;
     }
-    printf("BV[0]: %15.18f\n", BV[0]);
+    //printf("BV[0]: %15.18f\n", BV[0]);
 
 
-    a = 0.0;
-    b = 0.0;
-    c = 0.0;
-    d = 0.0;
+    a = 0.0d;
+    b = 0.0d;
+    c = 0.0d;
+    d = 0.0d;
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
         {
             for (int k = 0; k < N; k++)
             {
-                switch (int((i+j+k % 4) + 1))
+                switch (int(((i+j+k + 3) % 4) + 1))
                 {
                     case 1:
                         a = a + AV[i] * BV[j] * ID[j][k];
@@ -327,7 +321,7 @@ void idcheck(int N, double &check, double AV[MAXDIM], double BV[MAXDIM], double 
                         break;
                     case 3:
                         c = c - AV[i] * BV[j] * ID[k][j];
-                        check = sqrt(pow(b,2.0) + pow(c,2.0));
+                        check = sqrt(pow(b,2.0f) + pow(c,2.0f));
                         break;
                     case 4:
                         d = d - AV[j] * BV[i] * ID[j][k];
@@ -336,12 +330,15 @@ void idcheck(int N, double &check, double AV[MAXDIM], double BV[MAXDIM], double 
                 }
             }
         }
+    //printf("Check: %15.18f\n", check);
+    //printf("Check2: %15.18f\n", check2);
+    //printf("-------------------\n");
     }
 
-    printf("Check: %15.18f\n", check);
-    printf("Check2: %15.18f\n", check2);
+    //printf("Check: %15.18f\n", check);
+    //printf("Check2: %15.18f\n", check2);
 
-    check = min(abs(check2),abs(check)) / max(abs(check2),abs(check));
+    check = fmin(abs(check2),abs(check)) / fmax(abs(check2),abs(check)) ;
 }
 
 

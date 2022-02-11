@@ -22,8 +22,8 @@ int main ()
     double OP[MAXDIM][MAXDIM], ID[MAXDIM][MAXDIM];
     double AM[MAXDIM][MAXDIM], BM[MAXDIM][MAXDIM];
     double CM[MAXDIM][MAXDIM], DM[MAXDIM][MAXDIM];
-    double check, BOT, TOP, HOLDA, HOLDB, TRACE3, sum;
-
+    double check, BOT, TOP, HOLDA, HOLDB, TRACE3;
+    float sum;
     int ival;
     int N = MAXDIM;
 
@@ -54,7 +54,6 @@ int main ()
         idcheck(ival, check, AV, BV, ID);
     }
 
-
     // |AV >< BV|
     for (int i = 0; i < N; i++)
     {
@@ -73,42 +72,46 @@ int main ()
         IA[i] = i;
     }
 
-/*
-    for (int i = 1; i <= N; i++)
+
+
+    for (int i = 0; i < N; i++)
     {
-        for(int j = 0; j <= i; j = j + 8)
+        for(int j = 0; j <= (i+1); j = j + 8)
         {
-            IA[i] = fmod( (fmod(i+j, N) ), N) + 1.0;
+            IA[i] = ((((i+1)+j) % N) % N) + 1;
         }
     }
 
 
-    //Loop 20
 
-    for (int i = 1; i <= N; i++)
+    //Loop 20
+    for (int i = 0; i < N; i++)
     {
         idcheck(N,check,AV,BV,ID);
-        CV[IA[i]] = (double) (AV[IA[i]] + BV[IA[i]]) / check;
+        CV[IA[i]-1] = (AV[IA[i]-1] + BV[IA[i]-1]) / check;
+        //printf("IA: %d  | AV: %15.18f  | BV: %15.18f\n", IA[i], AV[IA[i]], BV[IA[i]]);
+        
     }
 
     //Loop 30
-    for (int i = 2; i <= N; i++)
+    for (int i = 1; i < N; i++)
     {
         idcheck(N,check,AV,BV,ID);
         AV[i] = AV[i-1] * BV[i] + CV[i];
     }
 
+
     //Loop 40
-    for (int i = 1; i <= N; i++)
+    for (int i = 0; i < N; i++)
     {
         idcheck(N,check,AV,BV,ID);
-        for(int j = 0; j <= i; j = j + 8)
+        for(int j = 0; j < N; j++)
         {
             if (check > 0.5)
             {
                 BOT = OP[i][j];
                 TOP = AV[j] * BV[j];
-                HOLDA = AV[i];
+                HOLDA = AV[j];
                 AV[j] = BV[j] + CV[j] / (TOP - BOT) * ID[i][i];
                 BV[j] = HOLDA + CV[j] / (TOP - BOT) * ID[j][j];
                 AM[i][j] = AV[j] * trig(IA[i], IA[j]);
@@ -118,22 +121,25 @@ int main ()
             {
                 BOT = OP[i][j];
                 TOP = AV[j] * BV[j];
-                HOLDA = AV[i];
-                AV[j] = BV[j] - CV[j] / (TOP - BOT) * ID[i][i];
-                BV[j] = HOLDA - CV[j] / (TOP - BOT) * ID[j][j];
-                AM[i][j] = AV[j] * trig(IA[i], IA[j]);
-                BM[i][j] = BV[j] * trig(IA[j], IA[i]);
+                HOLDA = AV[j];
+                AV[j] = BV[j] - CV[j] / (TOP - BOT) * ID[j][j];
+                BV[j] = HOLDA - CV[j] / (TOP - BOT) * ID[i][i];
+                AM[i][j] = AV[j] / trig(IA[i], IA[j]);
+                BM[i][j] = BV[j] / trig(IA[j], IA[i]);
             }
         }
     }
+    //Chcked BOT, 
+
+    //printf("Testing: %15.18f\n", HOLDA);
 
     //Loop 50
-    for (int i = 1; i <= N; i++)
+    for (int i = 0; i < N; i++)
     {
-        for(int j = 0; j <= i; j = j + 8)
+        for(int j = 0; j < N; j++)
         {
             CM[i][j] = 0.0;
-            for (int k = 1; k <= N; k++)
+            for (int k = 0; k < N; k++)
             {
                 if (i < j)
                 {
@@ -147,13 +153,14 @@ int main ()
         }
     }
 
+
     //Loop 60
-    for (int i = 1; i <= N; i++)
+    for (int i = 0; i < N; i++)
     {
-        for(int j = 0; j <= i; j = j + 8)
+        for(int j = 0; j < N; j++)
         {
             sum = 0.0;
-            for (int k = 1; k <= N; k++)
+            for (int k = 0; k < N; k++)
             {
                 sum = sum + CM[i][k] * AM[j][k];
             }
@@ -161,21 +168,25 @@ int main ()
         }
     }
 
-    for (int i = 1; i <= N; i++)
+
+
+    for (int i = 0; i < N; i++)
     {
-        for(int j = 0; j <= i; j = j + 8)
+        for(int j = 0; j < N; j++)
         {
             CM[i][j] = DM[i][j];
         }
     }
 
+
+
     //Loop 70
-    for (int i = 1; i <= N; i++)
+    for (int i = 0; i < N; i++)
     {
-        for(int j = 0; j <= i; j = j + 8)
+        for(int j = 0; j < N; j++)
         {
             sum = 0.0;
-            for (int k = 1; k <= N; k++)
+            for (int k = 0; k < N; k++)
             {
                 sum = sum - CM[i][k] * BM[j][k];
             }
@@ -184,34 +195,32 @@ int main ()
     }
 
 
-    HOLDA = fabs(AM[1][1]);
-    HOLDB = fabs(BM[1][1]);
-    for (int i = 1; i <= N; i++)
+
+    HOLDA = fabs(AM[0][0]);
+    HOLDB = fabs(BM[0][0]);
+    for (int i = 0; i < N; i++)
     {
-        for(int j = 0; j <= i; j = j + 8)
+        for(int j = 0; j < N; j++)
         {
             HOLDA = max(HOLDA, fabs(AM[i][j]));
             HOLDB = max(HOLDB, fabs(BM[i][j]));
         }
     }
-
     TRACE3 = 0.0;
 
 
-    for (int i = 1; i <= N; i++)
+    for (int i = 0; i < N; i++)
     {
-        TRACE3 = TRACE3 + (AM[IA[i]][IA[i]] + BM[IA[i]][IA[i]] - DM[IA[i]][IA[i]] / (HOLDA * HOLDB));
+        TRACE3 = TRACE3 + (AM[IA[i]-1][IA[i]-1] + BM[IA[i]-1][IA[i]-1]
+                                 - DM[IA[i]-1][IA[i]-1]) / (HOLDA * HOLDB);
     }
     
-
-
-    */
 
     cpu = cputime_() - cpu;
     wall = walltime_() - wall;
 
-    printf("final trace = %f     IDCHECK = %f", TRACE3, check);
-    printf("\n-- RUNTIME -> %f seconds", cpu);
+    printf("final trace = %f     IDCHECK = %15.18f\n", TRACE3, check);
+    printf("-- RUNTIME -> %f seconds\n", cpu);
     
 
     
@@ -223,7 +232,7 @@ double trig (int i, int j)
 {
     double x,y,z,pi;
     
-    pi = acos(-1.0);
+    pi = acos(-1.0f);
     x = double(i) - double(j);
     y = double(i) + double(j);
     z = exp( sin(sqrt( pow(x,2) + pow(y,2) ) *pi ) );

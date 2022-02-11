@@ -1,0 +1,29 @@
+#!/bin/sh
+#PBS -N Dusty_Skarbek
+#PBS -m abe
+#PBS -M Michael.W.Skarbek@live.mercer.edu
+#PBS -j oe
+#PBS -k n
+#PBS -l nodes=1:hammer:ppn=1,walltime=2:00:00
+#PBS -V
+#
+cd /home/skarbek_mw/dusty
+make pristine
+make all
+
+echo ""
+echo "MAXDIM = 25"
+echo "Flags: -O3"
+
+echo "F77"
+dusty77
+
+echo "-------------"
+echo "F95"
+dusty95
+
+echo "-------------"
+echo "C"
+dusty
+dusty
+dusty

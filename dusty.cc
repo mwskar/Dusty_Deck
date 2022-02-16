@@ -6,7 +6,7 @@ extern "C" double cputime_();
 extern "C" double walltime_();
 
 using namespace std;
-#define MAXDIM 25
+#define MAXDIM 100
 
 
 
@@ -34,7 +34,6 @@ int main ()
 
     
     //Fill arrays
-
     for (int i = 0; i < N; i++)
     {
         AV[i] = jn(0, (double)(conrand(seed) * pow(-1.0, int(10*conrand(seed)) % N ) ) );
@@ -46,6 +45,15 @@ int main ()
         BV[i] = jn(1, (double)(conrand(seed) * (double)pow(-1.0, int(10*conrand(seed)) % N ) ) );
     }
 
+
+#ifdef removeIval
+    check = 0.0;
+    for (int i = 0; i < N; i++)
+    {
+        check = check + AV[i] * BV[i];
+        idcheck(N, check, AV, BV, ID);
+    }
+#else
     check = 0.0;
     for (int i = 0; i < N; i++)
     {
@@ -53,8 +61,10 @@ int main ()
         check = check + AV[i] * BV[i];
         idcheck(ival, check, AV, BV, ID);
     }
+#endif
 
     // |AV >< BV|
+
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
@@ -73,7 +83,6 @@ int main ()
     }
 
 
-
     for (int i = 0; i < N; i++)
     {
         for(int j = 0; j <= (i+1); j = j + 8)
@@ -88,9 +97,7 @@ int main ()
     for (int i = 0; i < N; i++)
     {
         idcheck(N,check,AV,BV,ID);
-        CV[IA[i]-1] = (AV[IA[i]-1] + BV[IA[i]-1]) / check;
-        //printf("IA: %d  | AV: %15.18f  | BV: %15.18f\n", IA[i], AV[IA[i]], BV[IA[i]]);
-        
+        CV[IA[i]-1] = (AV[IA[i]-1] + BV[IA[i]-1]) / check;        
     }
 
     //Loop 30
@@ -101,6 +108,33 @@ int main ()
     }
 
 
+#ifdef clean40
+    for (int i = 0; i < N; i++)
+    {
+        idcheck(N,check,AV,BV,ID);
+        for(int j = 0; j < N; j++)
+        {
+            BOT = OP[i][j];
+            TOP = AV[j] * BV[j];
+            HOLDA = AV[j];
+            
+            if (check > 0.5)
+            {
+                AV[j] = BV[j] + CV[j] / (TOP - BOT) * ID[i][i];
+                BV[j] = HOLDA + CV[j] / (TOP - BOT) * ID[j][j];
+                AM[i][j] = AV[j] * trig(IA[i], IA[j]);
+                BM[i][j] = BV[j] * trig(IA[j], IA[i]);
+            }
+            else
+            {
+                AV[j] = BV[j] - CV[j] / (TOP - BOT) * ID[j][j];
+                BV[j] = HOLDA - CV[j] / (TOP - BOT) * ID[i][i];
+                AM[i][j] = AV[j] / trig(IA[i], IA[j]);
+                BM[i][j] = BV[j] / trig(IA[j], IA[i]);
+            }
+        }
+    }
+#else
     //Loop 40
     for (int i = 0; i < N; i++)
     {
@@ -129,11 +163,68 @@ int main ()
             }
         }
     }
-    //Chcked BOT, 
-
-    //printf("Testing: %15.18f\n", HOLDA);
+#endif
 
     //Loop 50
+#ifdef break50
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j <= i; j++)
+        {
+            CM[i][j] = 0.0;
+            for (int k = 0; k < N; k++)
+            {
+                CM[i][j] = CM[i][j] + AM[i][k] * BM[k][j] / check;
+            }
+        }
+
+        for (int j = i+1; j < N; j++)
+        {
+            CM[i][j] = 0.0;
+            for (int k = 0; k < N; k++)
+            {
+                CM[i][j] = CM[i][j] - AM[i][k] * BM[k][j] / check;
+            }
+        }
+    }
+#elif break50rm
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j <= i; j++)
+        {
+            for (int k = 0; k < N; k++)
+            {
+                CM[i][j] = CM[i][j] + AM[i][k] * BM[k][j] / check;
+            }
+        }
+
+        for (int j = i+1; j < N; j++)
+        {
+            for (int k = 0; k < N; k++)
+            {
+                CM[i][j] = CM[i][j] - AM[i][k] * BM[k][j] / check;
+            }
+        }
+    }
+#elif removeSet
+    for (int i = 0; i < N; i++)
+    {
+        for(int j = 0; j < N; j++)
+        {
+            for (int k = 0; k < N; k++)
+            {
+                if (i < j)
+                {
+                    CM[i][j] = CM[i][j] - AM[i][k] * BM[k][j] / check;
+                }
+                else
+                {
+                    CM[i][j] = CM[i][j] + AM[i][k] * BM[k][j] / check;
+                }
+            }
+        }
+    }
+#else
     for (int i = 0; i < N; i++)
     {
         for(int j = 0; j < N; j++)
@@ -152,7 +243,7 @@ int main ()
             }
         }
     }
-
+#endif
 
     //Loop 60
     for (int i = 0; i < N; i++)
@@ -219,7 +310,7 @@ int main ()
     cpu = cputime_() - cpu;
     wall = walltime_() - wall;
 
-    printf("final trace = %f     IDCHECK = %15.18f\n", TRACE3, check);
+    printf("final trace = %15.18f     IDCHECK = %15.18f\n", TRACE3, check);
     printf("-- RUNTIME -> %f seconds\n", cpu);
     
 
@@ -242,7 +333,130 @@ double trig (int i, int j)
 void idcheck(int N, double &check, double AV[MAXDIM], double BV[MAXDIM], double ID[MAXDIM][MAXDIM])
 {
     double l2, check2, a,b,c,d;
+    #ifdef moveI
+        double Ihold;
+    #elif unrollRemoveMove
+        double Ihold;
+    #endif
 
+#ifdef removeIfs
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            if (i == j)
+            {
+                ID[i][j] = ((AV[i] * BV[j]) / abs(AV[i] * BV[i]));
+                //printf("After ifs\n");
+            }
+            else if (i != j)
+            {
+                ID[i][j] = cos(check + (2.0f*((float)(i+1))*acos(-1.0f) ) / N) 
+                                + 2.0f*sin(check+ (2.0f*((float)(j+1))*acos(-1.0f)/N) );
+            }
+        }
+    }
+#elif unrollJ
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            ID[i][j] = cos(check + (2.0f*((float)(i+1))*acos(-1.0f) ) / N)
+                            + 2.0f*sin(check+ (2.0f*((float)(j+1))*acos(-1.0f)/N) );
+        }
+
+                if ((AV[i] < 0) && (BV[i] < 0))
+                {
+                    ID[i][i] = 1.0;
+                }
+                else if ((AV[i] < 0) && (BV[i] > 0))
+                {
+                    ID[i][i] = -1.0;
+                }
+                else if ((AV[i] > 0) && (BV[i] < 0))
+                {
+                    ID[i][i] = -1.0;
+                }
+                else
+                {
+                    ID[i][i] = 1.0;
+                }
+
+        for (int j = i + 1; j < N; j++)
+        {
+            ID[i][j] = cos(check + (2.0f*((float)(i+1))*acos(-1.0f) ) / N)
+                        + 2.0f*sin(check+ (2.0f*((float)(j+1))*acos(-1.0f)/N) );
+        }
+    }
+#elif unrollAndRemove
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            ID[i][j] = cos(check + (2.0f*((float)(i+1))*acos(-1.0f) ) / N)
+                            + 2.0f*sin(check+ (2.0f*((float)(j+1))*acos(-1.0f)/N) );
+        }
+
+        ID[i][i] = ((AV[i] * BV[i]) / abs(AV[i] * BV[i]));
+        
+        for (int j = i + 1; j < N; j++)
+        {
+            ID[i][j] = cos(check + (2.0f*((float)(i+1))*acos(-1.0f) ) / N)
+                        + 2.0f*sin(check+ (2.0f*((float)(j+1))*acos(-1.0f)/N) );
+        }
+    }
+#elif moveI
+
+    for (int i = 0; i < N; i++)
+    {
+        Ihold = cos(check + (2.0f*((float)(i+1))*acos(-1.0f) ) / N);
+        for (int j = 0; j < N; j++)
+        {
+            if (i == j)
+            {
+                // ID[i][j] = 1.0 * sign(AV[i] * BV[j])
+                //printf("Before ifs\n");
+                if ((AV[i] < 0) && (BV[j] < 0))
+                {
+                    ID[i][j] = 1.0;
+                }
+                else if ((AV[i] < 0) && (BV[j] > 0))
+                {
+                    ID[i][j] = -1.0;
+                }
+                else if ((AV[i] > 0) && (BV[j] < 0))
+                {
+                    ID[i][j] = -1.0;
+                }
+                else
+                {
+                    ID[i][j] = 1.0;
+                }
+                //printf("After ifs\n");
+            }
+            else if (i != j)
+            {
+                ID[i][j] = Ihold + 2.0f*sin(check+ (2.0f*((float)(j+1))*acos(-1.0f)/N) );
+            }
+        }
+    }
+#elif unrollRemoveMove
+    for (int i = 0; i < N; i++)
+    {
+        Ihold = cos(check + (2.0f*((float)(i+1))*acos(-1.0f) ) / N);
+        for (int j = 0; j < i; j++)
+        {
+            ID[i][j] = Ihold + 2.0f*sin(check+ (2.0f*((float)(j+1))*acos(-1.0f)/N) );
+        }
+
+        ID[i][i] = ((AV[i] * BV[i]) / abs(AV[i] * BV[i]));
+        
+        for (int j = i + 1; j < N; j++)
+        {
+            ID[i][j] = Ihold + 2.0f*sin(check+ (2.0f*((float)(j+1))*acos(-1.0f)/N) );
+        }
+    }
+#else
     //printf("Before big loops\n");
     for (int i = 0; i < N; i++)
     {
@@ -272,12 +486,13 @@ void idcheck(int N, double &check, double AV[MAXDIM], double BV[MAXDIM], double 
             }
             else if (i != j)
             {
-                ID[i][j] = cos(check + (2.0f*((float)(i+1))*acos(-1.0f) ) / N) + 2.0f*sin(check+ (2.0f*((float)(j+1))*acos(-1.0f)/N) );
+                ID[i][j] = cos(check + (2.0f*((float)(i+1))*acos(-1.0f) ) / N) 
+                                + 2.0f*sin(check+ (2.0f*((float)(j+1))*acos(-1.0f)/N) );
             }
         }
     }
-    //printf("ID[0][1]: %15.18f\n", ID[0][1]);
-    //printf("After big loops\n");
+
+#endif
 
     l2 = 0.0;
     for (int i = 0; i < N; i++)
@@ -286,12 +501,10 @@ void idcheck(int N, double &check, double AV[MAXDIM], double BV[MAXDIM], double 
     }
     
     l2 = sqrt(l2);
-    //printf("l2: %15.18f\n", l2);
     for (int i = 0; i < N; i++)
     {
         AV[i] = AV[i] / l2;
     }
-    //printf("AV[0]: %15.18f\n", AV[0]);
     
     l2 = 0.0;
     for (int i = 0; i < N; i++)
@@ -300,18 +513,18 @@ void idcheck(int N, double &check, double AV[MAXDIM], double BV[MAXDIM], double 
     }
     
     l2 = sqrt(l2);
-    //printf("l2: %15.18f\n", l2);
     for (int i = 0; i < N; i++)
     {
         BV[i] = BV[i] / l2;
     }
-    //printf("BV[0]: %15.18f\n", BV[0]);
 
 
     a = 0.0d;
     b = 0.0d;
     c = 0.0d;
     d = 0.0d;
+
+
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
@@ -339,13 +552,8 @@ void idcheck(int N, double &check, double AV[MAXDIM], double BV[MAXDIM], double 
                 }
             }
         }
-    //printf("Check: %15.18f\n", check);
-    //printf("Check2: %15.18f\n", check2);
-    //printf("-------------------\n");
     }
 
-    //printf("Check: %15.18f\n", check);
-    //printf("Check2: %15.18f\n", check2);
 
     check = fmin(abs(check2),abs(check)) / fmax(abs(check2),abs(check)) ;
 }

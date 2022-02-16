@@ -4,7 +4,7 @@
 !  Modified to use timing libs in 2016
 !  Modified to use standardized RNG in 2018 
 
-      parameter (MAXDIM = 25)
+      parameter (MAXDIM = 100)
 
       integer IA(MAXDIM), N
       double precision AV(MAXDIM), BV(MAXDIM), CV(MAXDIM)
@@ -115,9 +115,23 @@
          end do
       end do
 
-
+#ifdef break50rm
 ! Loop 50
+      do i = 1, N
+         do j = 1, i
+            do k = 1, N
+               CM(i,j) = CM(i,j) + AM(i,k) * BM(k,j) / check 
+            end do
+         end do
 
+         do j = i+1, N
+            do k = 1, N
+               CM(i,j) = CM(i,j) - AM(i,k) * BM(k,j) / check 
+            end do
+         end do
+      end do
+#else
+! Loop 50
       do i = 1, N
          do  j = 1, N
             CM(i,j) = 0.0
@@ -130,8 +144,7 @@
             end do
          end do
       end do
-
-
+#endif
 ! Loop 60
 
       do i = 1, N
@@ -203,7 +216,36 @@
       double precision l2
       double precision check, check2
       double precision a, b, c, d 
+#ifdef unrollRemoveMove
+      double precision Ihold;
+#endif
 
+#ifdef unrollRemoveMove
+   do i = 1, N
+      Ihold = cos(check+2.0*i*acos(-1.0)/N) 
+      do j = 1, i-1
+         ID(i,j) =  Ihold + 2.0*sin(check+ 2.0*j*acos(-1.0)/N)
+      end do
+
+      ID(i,i) = (AV(i) * BV(i)) / abs(AV(i) * BV(i))
+
+      do j = i+1, N
+         ID(i,j) =  Ihold + 2.0*sin(check+ 2.0*j*acos(-1.0)/N)
+      end do
+   end do
+#elif unrollAndRemove
+   do i = 1, N
+      do j = 1, i-1
+         ID(i,j) =  cos(check+2.0*i*acos(-1.0)/N) + 2.0*sin(check+ 2.0*j*acos(-1.0)/N)
+      end do
+
+      ID(i,i) = (AV(i) * BV(i)) / abs(AV(i) * BV(i))
+
+      do j = i+1, N
+         ID(i,j) =  cos(check+2.0*i*acos(-1.0)/N) + 2.0*sin(check+ 2.0*j*acos(-1.0)/N)
+      end do
+   end do
+#else
       do i = 1, N  
         do j = 1, N
           if ( i .eq. j ) then 
@@ -221,6 +263,7 @@
           endif
         end do
       end do
+#endif
 
       l2 = 0.0
       do i = 1, N

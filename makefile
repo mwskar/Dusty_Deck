@@ -8,15 +8,15 @@
 
 F77 = gfortran    
 CC  = g++ 
-CFLAGS = -O3
-FFLAGS = -O3
+CFLAGS = -O2 -Dbreak50rm -DunrollRemoveMove -Dclean40 -DmoveIval
+FFLAGS = -cpp -O2 -DunrollAndRemove
 
 TIMINGLIBS =  -L./ -llbstime 
 CLIBS = -lm
 
 OBJS = cputime.o walltime.o  
 
-all: dusty77 dusty95 dusty lib
+all: dusty95 dusty lib
 
 cputime.o : cputime.cc   
 	$(CC) $(CFLAGS) -c cputime.cc  

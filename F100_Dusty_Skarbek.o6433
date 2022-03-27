@@ -1,0 +1,28 @@
+rm *.o
+rm: cannot remove ‘*.o’: No such file or directory
+make: *** [pristine] Error 1
+gfortran     -cpp -O2 -Dbreak50rm -c dusty.f95
+mv dusty.o dusty95.o   
+g++  -O2 -Dbreak50rm -DunrollRemoveMove -Dclean40 -DmoveIval -c cputime.cc  
+g++  -O2 -Dbreak50rm -DunrollRemoveMove -Dclean40 -DmoveIval -c walltime.cc  
+ar -rc liblbstime.a cputime.o walltime.o   
+ranlib liblbstime.a
+gfortran     -o dusty95 dusty95.o  -L./ -llbstime  -lstdc++  
+g++  -O2 -Dbreak50rm -DunrollRemoveMove -Dclean40 -DmoveIval -c dusty.cc   
+g++  -o dusty dusty.o  -L./ -llbstime  -lstdc++  
+
+MAXDIM = 100
+Fortran test
+Flags: -O2 -Dbreak50rm
+-------------
+F95
+ Final trace =                        NaN  and IDCHECK                        NaN
+ -- RUNTIME ->    26.820000000000000       seconds
+ Final trace =                        NaN  and IDCHECK                        NaN
+ -- RUNTIME ->    26.989999999999998       seconds
+ Final trace =    386743.81287443032       and IDCHECK   0.81989322403772058     
+ -- RUNTIME ->    26.920000000000002       seconds
+-------------
+C
+final trace = 386743.812874430324882269     IDCHECK = 0.819893224037720580
+-- RUNTIME -> 23.960000 seconds

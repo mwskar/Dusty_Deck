@@ -1,0 +1,12 @@
+set title "Unroll idcheck conditional to j-loops and remove if-elifs| F95"
+set xtics 0,1,2
+set xlabel "Optimization flag"
+set ylabel "Time in Seconds"
+set yrange[20:125]
+plot "UnrollAndRemove" using 1:2 with lines title "Baseline"
+replot "UnrollAndRemove" using 1:3 with lines title "Changes"
+set terminal postscript enhanced color landscape
+replot
+set output "UnrollAndRemove.png"
+set terminal png
+replot

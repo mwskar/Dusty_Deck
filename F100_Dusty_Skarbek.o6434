@@ -1,0 +1,31 @@
+rm *.o
+rm *.a
+touch *.cc *.f  
+test -f dusty && rm dusty
+test -f dusty77 && rm dusty77
+make: *** [pristine] Error 1
+gfortran     -cpp -O2 -Dbreak50rm -c dusty.f95
+mv dusty.o dusty95.o   
+g++  -O2 -Dbreak50rm -DunrollRemoveMove -Dclean40 -DmoveIval -c cputime.cc  
+g++  -O2 -Dbreak50rm -DunrollRemoveMove -Dclean40 -DmoveIval -c walltime.cc  
+ar -rc liblbstime.a cputime.o walltime.o   
+ranlib liblbstime.a
+gfortran     -o dusty95 dusty95.o  -L./ -llbstime  -lstdc++  
+g++  -O2 -Dbreak50rm -DunrollRemoveMove -Dclean40 -DmoveIval -c dusty.cc   
+g++  -o dusty dusty.o  -L./ -llbstime  -lstdc++  
+
+MAXDIM = 100
+Fortran test
+Flags: -O2 -Dbreak50rm
+-------------
+F95
+ Final trace =    386743.81287443032       and IDCHECK   0.81989322403772058     
+ -- RUNTIME ->    26.930000000000000       seconds
+ Final trace =    386743.81287443032       and IDCHECK   0.81989322403772058     
+ -- RUNTIME ->    26.870000000000001       seconds
+ Final trace =    386743.81287443032       and IDCHECK   0.81989322403772058     
+ -- RUNTIME ->    26.829999999999998       seconds
+-------------
+C
+final trace = 386743.812874430324882269     IDCHECK = 0.819893224037720580
+-- RUNTIME -> 23.820000 seconds

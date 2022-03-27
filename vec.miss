@@ -1,0 +1,82 @@
+dusty.cc:349:22: missed: statement clobbers memory: _34 = sqrt (_3);
+dusty.cc:349:12: missed: statement clobbers memory: z_22 = exp (_6);
+dusty.cc:350:25: missed: statement clobbers memory: _12 = log10 (_23);
+dusty.cc:548:23: missed: couldn't vectorize loop
+dusty.cc:548:23: missed: not vectorized: multiple nested loops.
+dusty.cc:550:27: missed: couldn't vectorize loop
+dusty.cc:550:27: missed: not vectorized: control flow in loop.
+dusty.cc:552:31: missed: couldn't vectorize loop
+dusty.cc:552:31: missed: not vectorized: control flow in loop.
+dusty.cc:481:23: missed: couldn't vectorize loop
+dusty.cc:481:23: missed: not vectorized: control flow in loop.
+dusty.cc:483:27: missed: couldn't vectorize loop
+dusty.cc:483:27: missed: not vectorized: control flow in loop.
+dusty.cc:523:14: missed: statement clobbers memory: l2_253 = sqrt (l2_228);
+dusty.cc:535:14: missed: statement clobbers memory: l2_265 = sqrt (l2_172);
+dusty.cc:566:37: missed: statement clobbers memory: _252 = sqrt (_127);
+dusty.cc:323:23: missed: couldn't vectorize loop
+dusty.cc:325:47: missed: not vectorized: no vectype for stmt: _115 = AM[_113][_113];
+ scalar_type: double
+dusty.cc:312:23: missed: couldn't vectorize loop
+dusty.cc:316:44: missed: not vectorized: complicated access pattern.
+dusty.cc:314:26: missed: couldn't vectorize loop
+dusty.cc:18:5: missed: not vectorized: unsupported use in stmt.
+dusty.cc:295:23: missed: couldn't vectorize loop
+dusty.cc:295:23: missed: not vectorized: multiple nested loops.
+dusty.cc:297:26: missed: couldn't vectorize loop
+dusty.cc:302:47: missed: not vectorized: complicated access pattern.
+dusty.cc:300:31: missed: couldn't vectorize loop
+dusty.cc:302:23: missed: not vectorized: unsupported use in stmt.
+dusty.cc:269:23: missed: couldn't vectorize loop
+dusty.cc:269:23: missed: not vectorized: multiple nested loops.
+dusty.cc:271:26: missed: couldn't vectorize loop
+dusty.cc:276:47: missed: not vectorized: complicated access pattern.
+dusty.cc:274:31: missed: couldn't vectorize loop
+dusty.cc:276:23: missed: not vectorized: unsupported use in stmt.
+dusty.cc:248:23: missed: couldn't vectorize loop
+dusty.cc:248:23: missed: not vectorized: multiple nested loops.
+dusty.cc:250:26: missed: couldn't vectorize loop
+dusty.cc:250:26: missed: not vectorized: control flow in loop.
+dusty.cc:253:31: missed: couldn't vectorize loop
+dusty.cc:253:31: missed: not vectorized: control flow in loop.
+dusty.cc:159:23: missed: couldn't vectorize loop
+dusty.cc:159:23: missed: not vectorized: control flow in loop.
+dusty.cc:162:26: missed: couldn't vectorize loop
+dusty.cc:162:26: missed: not vectorized: control flow in loop.
+dusty.cc:104:23: missed: couldn't vectorize loop
+dusty.cc:106:16: missed: statement clobbers memory: idcheck (100, &check, &AV, &BV, &ID);
+dusty.cc:97:23: missed: couldn't vectorize loop
+dusty.cc:99:16: missed: statement clobbers memory: idcheck (100, &check, &AV, &BV, &ID);
+dusty.cc:86:23: missed: couldn't vectorize loop
+dusty.cc:18:5: missed: not vectorized: relevant stmt not supported: _471 = _472 / 8;
+dusty.cc:68:23: missed: couldn't vectorize loop
+dusty.cc:68:23: missed: not vectorized: control flow in loop.
+dusty.cc:70:27: missed: couldn't vectorize loop
+dusty.cc:70:27: missed: not vectorized: control flow in loop.
+dusty.cc:58:23: missed: couldn't vectorize loop
+dusty.cc:58:23: missed: not vectorized: latch block not empty.
+dusty.cc:43:23: missed: couldn't vectorize loop
+/usr/local/gcc/11.2.0/include/c++/11.2.0/cmath:418:17: missed: statement clobbers memory: _300 = pow (-1.0e+0, _299);
+dusty.cc:37:23: missed: couldn't vectorize loop
+/usr/local/gcc/11.2.0/include/c++/11.2.0/cmath:418:17: missed: statement clobbers memory: _210 = pow (-1.0e+0, _214);
+dusty.cc:30:28: missed: statement clobbers memory: walltime_ ();
+dusty.cc:31:26: missed: statement clobbers memory: _183 = cputime_ ();
+/usr/local/gcc/11.2.0/include/c++/11.2.0/cmath:418:17: missed: statement clobbers memory: _210 = pow (-1.0e+0, _214);
+dusty.cc:39:19: missed: statement clobbers memory: _5 = jn (0, _4);
+/usr/local/gcc/11.2.0/include/c++/11.2.0/cmath:418:17: missed: statement clobbers memory: _300 = pow (-1.0e+0, _299);
+dusty.cc:45:19: missed: statement clobbers memory: _10 = jn (1, _9);
+dusty.cc:62:16: missed: statement clobbers memory: idcheck (100, &check, &AV, &BV, &ID);
+dusty.cc:72:20: missed: statement clobbers memory: idcheck (100, &check, &AV, &BV, &ID);
+dusty.cc:99:16: missed: statement clobbers memory: idcheck (100, &check, &AV, &BV, &ID);
+dusty.cc:106:16: missed: statement clobbers memory: idcheck (100, &check, &AV, &BV, &ID);
+dusty.cc:161:16: missed: statement clobbers memory: idcheck (100, &check, &AV, &BV, &ID);
+dusty.cc:181:40: missed: statement clobbers memory: _245 = trig (pretmp_513, pretmp_512);
+dusty.cc:182:40: missed: statement clobbers memory: _248 = trig (pretmp_512, pretmp_513);
+dusty.cc:171:40: missed: statement clobbers memory: _256 = trig (pretmp_513, pretmp_512);
+dusty.cc:172:40: missed: statement clobbers memory: _259 = trig (pretmp_512, pretmp_513);
+dusty.cc:252:22: missed: statement clobbers memory: __builtin_memset (_361, 0, 800);
+dusty.cc:288:22: missed: not vectorized: more than one data ref in stmt: MEM <unsigned char[80000]> [(char * {ref-all})&CM] = MEM <unsigned char[80000]> [(char * {ref-all})&DM];
+dusty.cc:330:19: missed: statement clobbers memory: _188 = cputime_ ();
+dusty.cc:331:21: missed: statement clobbers memory: walltime_ ();
+dusty.cc:333:11: missed: statement clobbers memory: printf ("final trace = %15.18f     IDCHECK = %15.18f\n", TRACE3_480, pretmp_474);
+dusty.cc:334:11: missed: statement clobbers memory: printf ("-- RUNTIME -> %f seconds\n", cpu_189);

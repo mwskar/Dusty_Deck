@@ -1,0 +1,41 @@
+O0      O1      O2        O3
+
+Baseline----------------------------
+
+------------------------------------
+
+All together
+
+
+Break 50
+
+
+Break 50 - remove setting CM = 0.0
+
+
+remove setting CM - no break 50
+
+
+
+#idcheck first nested loop
+O0      O1      O2        O3
+reomveIfs
+
+
+UnrollJ
+
+
+unrollAndRemove
+
+
+move i part of equation out of j
+
+
+unrollRemoveMove
+
+
+# Loop 40
+
+clean40
+
+remove ivalue

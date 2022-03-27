@@ -1,5 +1,5 @@
 #!/bin/sh
-#PBS -N Dusty_Skarbek
+#PBS -N F100_Dusty_Skarbek
 #PBS -m abe
 #PBS -M Michael.W.Skarbek@live.mercer.edu
 #PBS -j oe
@@ -12,18 +12,22 @@ make pristine
 make all
 
 echo ""
-echo "MAXDIM = 25"
-echo "Flags: -O3"
+echo "MAXDIM = 100"
+echo "Fortran test"
+echo "Flags: -O2 -DunrollAndRemove"
 
-echo "F77"
-dusty77
+#echo "F77"
+#dusty77
 
 echo "-------------"
 echo "F95"
 dusty95
+dusty95
+dusty95
+
 
 echo "-------------"
 echo "C"
 dusty
-dusty
-dusty
+#dusty
+#dusty

@@ -1,0 +1,89 @@
+O0      O1      O2        O3
+
+Baseline----------------------------
+4.02            1.32
+4.01            1.33
+4.01            1.33
+------------------------------------
+
+All together
+                0.93
+                0.94
+                0.94
+
+                0.94
+                0.96
+                1.00
+
+
+Break 50
+4.09            1.21
+4.05            1.19
+4.04            1.31
+
+Break 50 - remove setting CM = 0.0
+4.07                1.30
+                1.32
+                1.32
+
+remove setting CM - no break 50
+                1.24
+                1.20
+                1.27
+
+
+#idcheck first nested loop
+O0      O1      O2        O3
+reomveIfs
+                1.32
+                1.29
+                1.28
+
+UnrollJ
+                1.25
+                1.20
+                1.19
+
+                1.24
+                1.23
+                1.21
+
+unrollAndRemove
+                1.24
+                1.28
+                1.28
+
+                1.27
+                1.31
+                1.28
+
+move i part of equation out of j
+                1.06
+                1.07
+                0.98
+
+                0.98
+                1.09
+                1.10
+
+unrollRemoveMove
+                1.08
+                1.12
+                1.09
+
+                0.93
+                0.92
+                0.93
+
+# Loop 40
+
+clean40
+                1.23
+                1.17
+                1.31
+
+remove ivalue
+                1.26
+                1.22
+                1.19
+

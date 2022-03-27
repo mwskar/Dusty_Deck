@@ -1,0 +1,20 @@
+dusty.cc:516:23: optimized: loop vectorized using 16 byte vectors
+dusty.cc:510:23: optimized: loop vectorized using 16 byte vectors
+dusty.cc:504:23: optimized: loop vectorized using 16 byte vectors
+dusty.cc:498:23: optimized: loop vectorized using 16 byte vectors
+dusty.cc:516:23: optimized: loop turned into non-loop; it never loops
+dusty.cc:510:23: optimized: loop turned into non-loop; it never loops
+dusty.cc:504:23: optimized: loop turned into non-loop; it never loops
+dusty.cc:498:23: optimized: loop turned into non-loop; it never loops
+dusty.cc:264:23: optimized: Loop nest 11 distributed: split to 0 loops and 1 library calls.
+dusty.cc:230:26: optimized: Loop nest 21 distributed: split to 1 loops and 1 library calls.
+dusty.cc:516:23: optimized: loop vectorized using 16 byte vectors
+dusty.cc:510:23: optimized: loop vectorized using 16 byte vectors
+dusty.cc:504:23: optimized: loop vectorized using 16 byte vectors
+dusty.cc:498:23: optimized: loop vectorized using 16 byte vectors
+dusty.cc:516:23: optimized: loop turned into non-loop; it never loops
+dusty.cc:510:23: optimized: loop turned into non-loop; it never loops
+dusty.cc:504:23: optimized: loop turned into non-loop; it never loops
+dusty.cc:498:23: optimized: loop turned into non-loop; it never loops
+dusty.cc:264:23: optimized: Loop nest 11 distributed: split to 0 loops and 1 library calls.
+dusty.cc:230:26: optimized: Loop nest 21 distributed: split to 1 loops and 1 library calls.
